@@ -1,0 +1,21 @@
+name: qc_per_cell
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base=4.3
+  - r-tidyverse
+  - r-data.table
+  - r-ggplot2
+  - r-ggpubr
+  - r-scales
+  - python>=3.10
+  - scanpy
+  - anndata
+  - leidenalg
+  - matplotlib
+  - pandas
+  - numpy
+  - scipy
+  - scikit-misc
