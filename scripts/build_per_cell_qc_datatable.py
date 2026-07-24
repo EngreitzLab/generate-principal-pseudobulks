@@ -10,8 +10,7 @@ script writes.
 Each `annotation-{cell_type}-IGVF*` directory in the primary pseudobulk root
 carries its own per-subsample per_cell_qc.tsv with identical columns; this
 script concatenates them, keeping a single header, and skips any 0-byte
-placeholder files (some datasets in the shared pseudobulk archive have not
-yet been populated with real data).
+per_cell_qc.tsv files it encounters.
 
 Usage:
     python build_per_cell_qc_datatable.py \
@@ -75,7 +74,7 @@ def main():
                 print(f"[warn] No per_cell_qc.tsv in {d}, skipping", file=sys.stderr)
                 continue
             if os.path.getsize(qc_path) == 0:
-                print(f"[warn] Empty placeholder per_cell_qc.tsv in {d}, skipping", file=sys.stderr)
+                print(f"[warn] Empty per_cell_qc.tsv in {d}, skipping", file=sys.stderr)
                 continue
             with open(qc_path) as in_fh:
                 this_header = in_fh.readline()
