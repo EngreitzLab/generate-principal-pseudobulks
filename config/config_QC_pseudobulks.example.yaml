@@ -1,0 +1,42 @@
+# Template for config/config_QC_pseudobulks.yaml (the Snakefile loads that exact
+# path). Copy this file there and fill in the fields below for your run:
+#
+#   cp config/config_QC_pseudobulks.example.yaml config/config_QC_pseudobulks.yaml
+#
+# config/config_QC_pseudobulks.yaml is gitignored -- it will contain real,
+# run-specific paths and dataset/cell-type lists.
+
+# Directory containing per-cell-type QC-filtered barcode lists, i.e. the
+# `plots/{dataset}/{cell_type}/filtered_barcodes_with_subsamples.tsv.gz` files
+# written by scripts/plotting_scripts/plot_per_cell_qc.R (see README.md Step 2).
+QC_plots_dir: "/path/to/plots"
+
+# Root directory of the primary pseudobulking pipeline output, containing
+# {dataset}/pseudobulks/annotation-{cell_type}[-IGVF*]/ subdirectories.
+pseudobulk_dir: "/path/to/pseudobulks"
+
+# Root output directory for filtered ATAC fragment files and RNA count matrices.
+out_dir: "multiome_data"
+
+# GTF used to map Ensembl gene IDs to gene symbols in filter_rna_counts.py.
+# GENCODE 43 / GRCh38 -- IGVF Data Portal accession IGVFFI9573KOZR.
+transcriptome: "path/to/IGVFFI9573KOZR.gtf.gz"
+
+# Chromosome sizes file defining sort order for filter_atac_fragments.py.
+chrom_sizes: "reference/IGVF.DACC.GRCh38.chrom.sizes.tsv"
+
+# Mapping of dataset -> list of cell types to filter. Each (dataset, cell_type)
+# pair must have a corresponding QC-filtered barcode list at
+# {QC_plots_dir}/{dataset}/{cell_type}/filtered_barcodes_with_subsamples.tsv.gz
+# and a pseudobulk directory at
+# {pseudobulk_dir}/{dataset}/pseudobulks/annotation-{cell_type}[-IGVF*]/
+#
+# Tip: scripts/generate_dataset_yaml.py-style tooling is easy to hand-write for
+# your own directory layout, or just list cell types manually as below.
+datasets:
+  igvf1:
+    - hap1
+    - hl60
+    - hudep2
+    - k562
+    - u2os
