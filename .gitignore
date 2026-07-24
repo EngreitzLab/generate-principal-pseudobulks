@@ -1,0 +1,21 @@
+# Generated data and run-specific outputs -- this repo tracks pipeline CODE only.
+datatables/
+plots/
+multiome_data/
+logs/
+reference/*
+!reference/IGVF.DACC.GRCh38.chrom.sizes.tsv
+
+# Real per-dataset filtering config: never tracked, only the template is.
+config/config_QC_pseudobulks.yaml
+!config/config_QC_pseudobulks.example.yaml
+
+# Snakemake / conda / R / Python / editor cruft
+.snakemake/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.Rhistory
+.Rproj.user/
+*.log
+.DS_Store
