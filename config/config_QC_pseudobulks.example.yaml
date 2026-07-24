@@ -8,7 +8,7 @@
 
 # Directory containing per-cell-type QC-filtered barcode lists, i.e. the
 # `plots/{dataset}/{cell_type}/filtered_barcodes_with_subsamples.tsv.gz` files
-# written by scripts/plotting_scripts/plot_per_cell_qc.R (see README.md Step 2).
+# written by plotting_scripts/plot_per_cell_qc.R (see README.md Step 2).
 QC_plots_dir: "/path/to/plots"
 
 # Root directory of the primary pseudobulking pipeline output, containing

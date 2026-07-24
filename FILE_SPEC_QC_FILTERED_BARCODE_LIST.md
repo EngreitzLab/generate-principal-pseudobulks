@@ -4,7 +4,7 @@
 
 A gzipped, header-ed TSV (`TabularFile`) listing the 16-bp 10x cell barcodes that
 passed RNA+ATAC QC and compose one annotated cluster. Produced by
-`apply_all_filters()` in `scripts/plotting_scripts/plot_per_cell_qc.R`:
+`apply_all_filters()` in `plotting_scripts/plot_per_cell_qc.R`:
 
 ```
 Rscript plot_per_cell_qc.R path/to/primary/pseudobulk/per_cell_qc.tsv plots_dir \

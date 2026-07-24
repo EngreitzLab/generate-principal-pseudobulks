@@ -53,7 +53,7 @@ build `filter_multiome` automatically per rule from
 `workflow/envs/filter_multiome_env.yaml`, so you don't need to create that
 one by hand. Verified against real data with `snakemake=9.16.3`.
 
-`scripts/build_per_cell_qc_datatable.py` (Step 0) has no third-party
+`plotting_scripts/build_per_cell_qc_datatable.py` (Step 0) has no third-party
 dependencies — any Python 3 works.
 
 ```bash
@@ -75,7 +75,7 @@ single cluster-level datatable, skipping any 0-byte `per_cell_qc.tsv` files
 it encounters.
 
 ```bash
-python3 scripts/build_per_cell_qc_datatable.py \
+python3 plotting_scripts/build_per_cell_qc_datatable.py \
     --pseudobulks /path/to/{dataset}/pseudobulks \
     --cell-type   k562 \
     --out         datatables/{dataset}_data/k562_per_cell_qc.tsv
@@ -109,24 +109,24 @@ While iterating, watch for:
 
 **Explore thresholds:**
 ```bash
-conda run -n qc_per_cell Rscript scripts/plotting_scripts/explore_qc_thresholds.R \
+conda run -n qc_per_cell Rscript plotting_scripts/explore_qc_thresholds.R \
     datatables/{dataset}_data/{cell_type}_per_cell_qc.tsv \
     --rna-min 1000 --gene-min 1000 --pct-mt-max 30 --tss-min 3
 
 # Compare multiple threshold sets at once:
-conda run -n qc_per_cell Rscript scripts/plotting_scripts/explore_qc_thresholds.R \
+conda run -n qc_per_cell Rscript plotting_scripts/explore_qc_thresholds.R \
     datatables/{dataset}_data/{cell_type}_per_cell_qc.tsv \
     --sets "--tss-min 3; --tss-min 5 --pct-mt-max 20; --tss-min 7 --pct-mt-max 15"
 
 # Show per-subsample breakdown:
-conda run -n qc_per_cell Rscript scripts/plotting_scripts/explore_qc_thresholds.R \
+conda run -n qc_per_cell Rscript plotting_scripts/explore_qc_thresholds.R \
     datatables/{dataset}_data/{cell_type}_per_cell_qc.tsv \
     --tss-min 5 --show-subsamples
 ```
 
 **Record the final thresholds:**
 ```bash
-conda run -n qc_per_cell Rscript scripts/plotting_scripts/plot_per_cell_qc.R \
+conda run -n qc_per_cell Rscript plotting_scripts/plot_per_cell_qc.R \
     datatables/{dataset}_data/{cell_type}_per_cell_qc.tsv \
     plots/{dataset}/{cell_type}/ \
     --rna-min 1000 --gene-min 1000 --pct-mt-max 30 \
@@ -240,9 +240,9 @@ cluster:
 
 | Script | Step | Environment |
 |---|---|---|
-| `scripts/build_per_cell_qc_datatable.py` | 0 | none (stdlib) |
-| `scripts/plotting_scripts/explore_qc_thresholds.R` | 1 | `qc_per_cell` |
-| `scripts/plotting_scripts/plot_per_cell_qc.R` | 1 | `qc_per_cell` |
+| `plotting_scripts/build_per_cell_qc_datatable.py` | 0 | none (stdlib) |
+| `plotting_scripts/explore_qc_thresholds.R` | 1 | `qc_per_cell` |
+| `plotting_scripts/plot_per_cell_qc.R` | 1 | `qc_per_cell` |
 | `Snakefile` (→ `workflow/scripts/filter_atac_fragments.py`, `filter_rna_counts.py`) | 2 | `run_snakemake9` to launch; `filter_multiome` (auto-built via `--use-conda`) to run the rules |
 
 ## File specs
