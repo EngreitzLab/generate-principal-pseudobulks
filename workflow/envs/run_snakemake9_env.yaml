@@ -1,0 +1,9 @@
+name: run_snakemake9
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python<=3.11
+  - mamba=1.5.11
+  - snakemake=9

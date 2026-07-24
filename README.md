@@ -38,19 +38,27 @@ ontology term.
 
 ## Environment setup
 
-Two conda environments are used:
+Three conda environments are used:
 
 | Env file | Used by | Contents |
 |---|---|---|
 | `workflow/envs/qc_per_cell_env.yaml` (`qc_per_cell`) | Step 1 (R scripts) | r-tidyverse, r-data.table, r-ggplot2, r-ggpubr, r-scales |
-| `workflow/envs/filter_multiome_env.yaml` (`filter_multiome`) | Step 2 (Snakefile) | bedops (`sort-bed`), htslib (`bgzip`/`tabix`), anndata, scipy, numpy, pandas, pyyaml, snakemake-minimal |
+| `workflow/envs/run_snakemake9_env.yaml` (`run_snakemake9`) | Step 2 (launching the Snakefile) | python, mamba, snakemake=9 |
+| `workflow/envs/filter_multiome_env.yaml` (`filter_multiome`) | Step 2 (the actual filtering rules) | bedops (`sort-bed`), htslib (`bgzip`/`tabix`), anndata, scipy, numpy, pandas, pyyaml, snakemake-minimal |
+
+**Snakemake must be installed to run Step 2** — it's not a script you run
+directly. `run_snakemake9_env.yaml` is a minimal env just for invoking
+`snakemake` itself; running with `--use-conda` (see Step 2) has Snakemake
+build `filter_multiome` automatically per rule from
+`workflow/envs/filter_multiome_env.yaml`, so you don't need to create that
+one by hand. Verified against real data with `snakemake=9.16.3`.
 
 `scripts/build_per_cell_qc_datatable.py` (Step 0) has no third-party
 dependencies — any Python 3 works.
 
 ```bash
 conda env create -f workflow/envs/qc_per_cell_env.yaml
-conda env create -f workflow/envs/filter_multiome_env.yaml
+conda env create -f workflow/envs/run_snakemake9_env.yaml
 ```
 
 ---
@@ -183,7 +191,7 @@ cp config/config_QC_pseudobulks.example.yaml config/config_QC_pseudobulks.yaml
 # edit config/config_QC_pseudobulks.yaml: QC_plots_dir, pseudobulk_dir, out_dir,
 # transcriptome, chrom_sizes, and the datasets/cell-types to run.
 
-conda activate filter_multiome
+conda activate run_snakemake9
 snakemake -n --use-conda   # dry-run first
 snakemake --use-conda
 ```
@@ -235,7 +243,7 @@ cluster:
 | `scripts/build_per_cell_qc_datatable.py` | 0 | none (stdlib) |
 | `scripts/plotting_scripts/explore_qc_thresholds.R` | 1 | `qc_per_cell` |
 | `scripts/plotting_scripts/plot_per_cell_qc.R` | 1 | `qc_per_cell` |
-| `Snakefile` (→ `workflow/scripts/filter_atac_fragments.py`, `filter_rna_counts.py`) | 2 | `filter_multiome` |
+| `Snakefile` (→ `workflow/scripts/filter_atac_fragments.py`, `filter_rna_counts.py`) | 2 | `run_snakemake9` to launch; `filter_multiome` (auto-built via `--use-conda`) to run the rules |
 
 ## File specs
 
